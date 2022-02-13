@@ -1,7 +1,7 @@
 package main
 
 import (
-	"fmt"
+	"io"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -14,7 +14,6 @@ func handleRequest(writer http.ResponseWriter, request *http.Request) {
 
 	if request.Method == "POST" {
 
-		fmt.Println("Requisição do tipo POST recebida!")
 		requestBody, requestError := ioutil.ReadAll(request.Body)
 
 		if requestError != nil {
@@ -22,9 +21,7 @@ func handleRequest(writer http.ResponseWriter, request *http.Request) {
 		}
 
 		requestBodyString := string(requestBody)
-		fmt.Println(requestBodyString)
 		query := strings.ReplaceAll(requestBodyString, " ", "+")
-		fmt.Println(query)
 
 		openLibraryURL := "http://openlibrary.org/search.json?title=" + query
 		libraryRequest, _ := http.NewRequest(http.MethodGet, openLibraryURL, nil)
@@ -38,8 +35,9 @@ func handleRequest(writer http.ResponseWriter, request *http.Request) {
 
 		libraryBody, _ := ioutil.ReadAll(response.Body)
 		libraryString := string(libraryBody)
-		fmt.Print(libraryString)
 
+		writer.Header().Set("Content-Type", "text/plain; charset=utf-8")
+		io.WriteString(writer, libraryString)
 	}
 }
 
