@@ -2,12 +2,15 @@ import sys
 import requests
 import json
 
+#define título como o argumento passado via linha de comando
 titulo = sys.argv[1]
 
-response = requests.post("http://localhost:3000", titulo)
+#envia o título em requisição do tipo POST para a API Go (está ouvindo na porta 3000 do host)
+response = requests.post("http://host.docker.internal:3000", titulo)
+
+#extrai, formata e imprime na tela os títulos de livro retornados pela API
 
 parsedResponse = json.loads(response.text)
-
 documents = parsedResponse["docs"]
 
 print("Títulos encontrados:\n")
