@@ -1,4 +1,4 @@
-# Atividade Entrevista MConf
+# Atividade Entrevista Mconf - Load Balancer
 ###### Rafael Cardoso
 
 Comandos para rodar as aplicações:
